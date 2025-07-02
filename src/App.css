@@ -40,3 +40,33 @@
 .read-the-docs {
   color: #888;
 }
+
+/* COMPONENTE DE LA IA */
+/* App.css */
+button.w-12.h-12 {
+  width: 60px !important;
+  height: 60px !important;
+  background-color: #ff6600 !important;
+  border: 3px solid #ffffff !important;
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 40px !important;
+  z-index: 9999 !important;
+  flex-wrap: wrap;
+  
+}
+
+button.w-12.h-12 img#widgetLogo {
+  width: 40px !important;
+  height: 40px !important;
+  border-radius: 50% !important;
+  
+}
+
+#chatTitle {
+  text-align: center !important;
+  width: 100% !important;
+}
+
+
+

@@ -1,48 +1,155 @@
+/* ============================= */
+/* ESTILOS GENERALES APP - MINIMALISTA AZUL */
+/* ============================= */
+
+:root {
+  --primary-color: #3a86ff;
+  --primary-hover: #2667cc;
+  --background-light: #f0f8ff;
+  --card-background: #ffffff;
+  --text-color: #2d3748;
+  --text-light: #4a5568;
+  --border-color: #e2e8f0;
+}
+
+body {
+  background-color: var(--background-light);
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Contenedor principal */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
+  max-width: 480px;
+  margin: 2rem auto;
   padding: 2rem;
+  background: var(--card-background);
+  border-radius: 12px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05);
+  color: var(--text-color);
+}
+
+/* Título */
+h1 {
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: rgb(13, 18, 151);
+  font-size: 1.5rem !important;
+  letter-spacing: -0.5px;
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Formulario */
+form {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+input[type="text"] {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  background-color: var(--card-background);
+  color: var(--text-color);
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(58, 134, 255, 0.2);
+}
+
+/* Solución para autocompletado */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px var(--card-background) inset !important;
+  -webkit-text-fill-color: var(--text-color) !important;
+}
+
+button {
+  padding: 15px;
+  background-color: var(--primary-color);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  background-color: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Mensajes */
+p {
+  font-style: italic;
+  color: var(--text-light);
+  margin-top: 1rem;
+}
+
+/* Lista de tareas */
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+li {
+  background: var(--card-background);
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+li:hover {
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+li::before {
+  content: "•";
+  color: var(--primary-color);
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  #root {
+    margin: 1rem;
+    padding: 1.5rem;
+    border-radius: 8px;
   }
-  to {
-    transform: rotate(360deg);
+
+  form {
+    flex-direction: column;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.75rem;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
+/* ============================= */
+/* ESTILOS DEL COMPONENTE DE LA IA */
+/* ============================= */
 
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-/* COMPONENTE DE LA IA */
-/* App.css */
 button.w-12.h-12 {
   width: 60px !important;
   height: 60px !important;
@@ -53,20 +160,15 @@ button.w-12.h-12 {
   right: 40px !important;
   z-index: 9999 !important;
   flex-wrap: wrap;
-  
 }
 
 button.w-12.h-12 img#widgetLogo {
   width: 40px !important;
   height: 40px !important;
   border-radius: 50% !important;
-  
 }
 
 #chatTitle {
   text-align: center !important;
   width: 100% !important;
 }
-
-
-

@@ -1,8 +1,15 @@
+import { useState, useEffect } from 'react';
+import { db } from './firebase';
+import { ref, push, onValue } from "firebase/database";
 import './App.css';
-import { useEffect } from 'react';
 
 function App() {
+  // Estado tareas
+  const [tarea, setTarea] = useState('');
+  const [tareas, setTareas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  // Código para cargar el widget codeGPT (tu código original)
   useEffect(() => {
     const script = document.createElement('script');
     script.id = "codeGPTWidgetScript";
@@ -19,21 +26,16 @@ function App() {
       if (button && img) {
         clearInterval(interval);
 
-        // Observador del botón para ocultar logo al abrir chat
+        // Observador para ocultar logo al abrir chat
         const observer = new MutationObserver(() => {
           const hasSvg = button.querySelector('svg');
-          if (hasSvg) {
-            img.style.display = 'none';
-          } else {
-            img.style.display = 'block';
-          }
+          img.style.display = hasSvg ? 'none' : 'block';
         });
 
         observer.observe(button, { childList: true, subtree: true });
       }
     }, 500);
 
-    // ➡ Observador para quitar el link <a> del chat title
     const intervalLink = setInterval(() => {
       const chatTitle = document.querySelector('h3#chatTitle');
       if (chatTitle) {
@@ -51,10 +53,71 @@ function App() {
     };
   }, []);
 
+  // Código para cargar tareas en tiempo real desde RTDB
+  useEffect(() => {
+    console.log("Escuchando Realtime Database...");
+    const tareasRef = ref(db, 'tareas');
+
+    const unsubscribe = onValue(tareasRef, (snapshot) => {
+      const data = snapshot.val();
+      const lista = data
+        ? Object.entries(data).map(([id, value]) => ({ id, ...value }))
+        : [];
+      console.log("Datos RTDB:", lista);
+      setTareas(lista);
+      setLoading(false);
+    });
+
+    return () => {
+      // no hay unsubscribe en onValue, pero se puede limpiar con off si se quiere
+      // off() no es obligatorio aquí en React
+    };
+  }, []);
+
+  // Función para agregar tarea
+  const agregarTarea = (e) => {
+    e.preventDefault();
+    if (tarea.trim() === '') return;
+
+    console.log("Agregando a RTDB:", tarea);
+    const tareasRef = ref(db, 'tareas');
+    push(tareasRef, {
+      nombre: tarea,
+      creada: new Date().toISOString()
+    });
+    setTarea('');
+  };
+
   return (
-    <>
-      <h1>CAMBIO DE ICONO DE CODE GPT</h1>
-    </>
+    <div>
+      <h1>Lista de Tareas (RTDB)</h1>
+      <div  style={{ padding: '2rem' }}>
+        <form onSubmit={agregarTarea}>
+        <input
+          type="text"
+          value={tarea}
+          onChange={(e) => setTarea(e.target.value)}
+          placeholder="Escribe una tarea..."
+        />
+        <button type="submit">Agregar</button>
+      </form>
+
+      <div style={{ marginTop: '20px' }}>
+        {loading ? (
+          <p>Cargando tareas desde RTDB...</p>
+        ) : tareas.length === 0 ? (
+          <p>No hay tareas aún. ¡Agrega una!</p>
+        ) : (
+          <ul>
+            {tareas.map((t) => (
+              <li key={t.id}>{t.nombre}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+      </div>
+      
+    </div>
   );
 }
 

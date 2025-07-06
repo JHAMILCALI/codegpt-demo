@@ -58,7 +58,7 @@ function App() {
     console.log("Escuchando Realtime Database...");
     const tareasRef = ref(db, 'tareas');
 
-    const unsubscribe = onValue(tareasRef, (snapshot) => {
+    const callback = (snapshot) => {
       const data = snapshot.val();
       const lista = data
         ? Object.entries(data).map(([id, value]) => ({ id, ...value }))
@@ -66,11 +66,15 @@ function App() {
       console.log("Datos RTDB:", lista);
       setTareas(lista);
       setLoading(false);
-    });
+    };
+
+    onValue(tareasRef, callback);
 
     return () => {
-      // no hay unsubscribe en onValue, pero se puede limpiar con off si se quiere
-      // off() no es obligatorio aquí en React
+      // Limpia el listener al desmontar el componente
+      import("firebase/database").then(({ off }) => {
+        off(tareasRef, "value", callback);
+      });
     };
   }, []);
 
